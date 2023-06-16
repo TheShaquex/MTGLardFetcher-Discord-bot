@@ -10,10 +10,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
 
-# Load the image links from the archive into a set
-with open("image_links.txt", "r") as f:
-    image_links = set(f.read().splitlines())
-
 @client.event
 async def on_ready():
     print(f"We have logged in as {client.user}")
@@ -22,11 +18,16 @@ async def on_ready():
 async def on_message(message):
     # Check if the message contains {{ and }} in the correct order
     if command_pattern.search(message.content):
+        # Load the image links from the archive
+        with open("image_links.txt", "r") as f:
+            image_links = set(f.read().splitlines())
+
         # Choose a random image link from the set
         random_link = random.choice(list(image_links))
 
         # Reply to the message with the random image link
         await message.reply(random_link)
 
-# Put your own bot token inside the ''
+# Put your token in the ''
 client.run('TOKEN GOES HERE')
+
